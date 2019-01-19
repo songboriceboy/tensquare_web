@@ -13,7 +13,7 @@
   import '~/assets/css/page-sj-qa-login.css'
 
   export default {
-    name: "index"
+    name: "inde"
   }
 </script>
 
