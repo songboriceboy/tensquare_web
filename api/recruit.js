@@ -45,16 +45,16 @@ export default {
       method: 'delete'
     })
   },
-  recommend(){
+  recommend() {
     return request({
-      url:`/${group_name}/${api_name}/search/recommend`,
-      method:'get'
+      url: `/${group_name}/${api_name}/search/recommend`,
+      method: 'get'
     })
   },
-  newlist(){
+  newlist() {
     return request({
-      url:`/${group_name}/${api_name}/search/newlist`,
-      method:'get'
+      url: `/${group_name}/${api_name}/search/newlist`,
+      method: 'get'
     })
   }
 }
