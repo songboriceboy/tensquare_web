@@ -1,23 +1,61 @@
 <template>
-    <div>
-      活动列表
-      <div v-for="(item,index) in items" :key="index">
-        <nuxt-link :to="'/gathering/item/'+item.id">{{item.name}}</nuxt-link>
+  <div>
+    <div class="wrapper activities">
+      <div class="activity-card-list">
+        <div class="top-title">
+          <h4 class="latest">最新活动</h4>
+          <div class="clearfix"></div>
+        </div>
+        <div class="activity-list" v-infinite-scroll="loadMore">
+          <ul class="activity">
+            <li class="activity-item" v-for="(item,index) in items" :key="index">
+              <div class="activity-inner">
+                <a href="http://"></a>
+                <div class="img">
+                  <a :href="'/gathering/item/'+item.id" target="_blank"><img :src="item.image" alt=""/></a>
+                </div>
+                <div class="text">
+                  <p class="title">{{item.name}}</p>
+                  <div class="fl goin">
+                    <p>时间：{{item.starttime}}</p>
+                    <p>城市：{{item.city}}</p>
+                  </div>
+                  <div class="fr btn">
+                    <span class="sui-btn btn-bao">立即报名</span>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-  import axios from 'axios'
-    export default {
-        asyncData(){
-          return axios.get('https://www.easy-mock.com/mock/5c3c576683a6d6013cad25cd/gathering/gathering').then(res=>{
-            return {items: res.data.data}
-          })
-        }
+  import '~/assets/css/page-sj-activity-index.css'
+  import gatheringApi from '@/api/gathering'
+
+  export default {
+    data() {
+      return {
+        pageNo: 1
+      }
+    },
+    asyncData() {
+      return gatheringApi.search(1, 13, {state: '1'}).then(res => {
+        return {items: res.data.data.rows}
+      })
+    },
+    methods:{
+      loadMore(){
+        this.pageNo++
+        gatheringApi.search(this.pageNo,12,{state:'1'}).then(res=>{
+          this.items=this.items.concat(res.data.data.rows)
+        })
+      }
     }
+  }
 </script>
-
-<style scoped>
-
-</style>

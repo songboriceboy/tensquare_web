@@ -419,12 +419,8 @@
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
 import '~/assets/css/page-sj-headline-login.css'
 
 export default {
-  components: {
-    AppLogo
-  }
 }
 </script>
