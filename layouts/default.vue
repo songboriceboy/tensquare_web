@@ -5,35 +5,31 @@
       <div class="activity-head">
         <div class="wrapper">
           <!--头部导航-->
-            <div class="sui-navbar">
-              <div class="navbar-inner">
-                <a href="index-logined.html" class="sui-brand"><img src="~/assets/img/asset-logo-black.png" alt="社交" /></a>
-                <ul class="sui-nav">
-                  <router-link to="/" tag="li" active-class="active" exact><a>头条</a></router-link>
-                  <router-link to="/qa" tag="li" active-class="active" exact><a>问答</a></router-link>
-                  <router-link to="/gathering" tag="li" active-class="active" exact><a>活动</a></router-link>
-                  <router-link to="/friends" tag="li" active-class="active" exact><a>交友</a></router-link>
-                  <router-link to="/recruit" tag="li" active-class="active" exact><a>招聘</a></router-link>
-                </ul>
-                <form class="sui-form sui-form pull-left">
-                  <input type="text" placeholder="输入关键词..." />
-                  <span class="btn-search fa fa-search"></span>
-                </form>
-                <div class="sui-nav pull-right info">
-                  <li><a href="~/assets/other-notice.html" target="_blank" class="notice">通知</a></li>
-                  <li class="hover">
-                    <span class="fa fa-plus "></span>
-                    <ul class="hoverinfo">
-                      <li><i class="fa fa-share-alt" aria-hidden="true"></i> <a href="~/assets/headline-submit.html">去分享</a></li>
-                      <li><i class="fa fa-question-circle" aria-hidden="true"></i> <a href="~/assets/qa-submit.html" target="_blank">提问题</a></li>
-                      <li><i class="fa fa-comments" aria-hidden="true"></i><a href="~/assets/spit-submit.html" target="_blank">去吐槽</a></li>
-                      <li><i class="fa fa-heartbeat" aria-hidden="true"></i> <a href="~/assets/makeFriends-submit.html" target="_blank">发约会</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="~/assets/person-homepage.html" target="_blank" class="homego"><img src="~/assets/img/widget-photo.png" alt="用户头像"></a></li>
-                </div>
+          <div class="sui-navbar">
+            <div class="navbar-inner">
+              <a href="index-logined.html" class="sui-brand"><img src="~/assets/img/asset-logo-black.png" alt="社交"/></a>
+              <ul class="sui-nav">
+                <router-link to="/" tag="li" active-class="active" exact><a>头条</a></router-link>
+                <router-link to="/qa" tag="li" active-class="active" exact><a>问答</a></router-link>
+                <router-link to="/gathering" tag="li" active-class="active" exact><a>活动</a></router-link>
+                <router-link to="/friends" tag="li" active-class="active" exact><a>交友</a></router-link>
+                <router-link to="/recruit" tag="li" active-class="active" exact><a>招聘</a></router-link>
+              </ul>
+              <form class="sui-form sui-form pull-left">
+                <input type="text" placeholder="输入关键词..."/>
+                <span class="btn-search fa fa-search"></span>
+              </form>
+              <div class="sui-nav pull-right info" v-if="user.name!==undefined">
+                <li><a href="~/assets/other-notice.html" target="_blank" class="notice">{{user.name}}</a></li>
+                <li><a href="#" class="homego"><img :src="user.avatar" width="50px" height="50px" :alt="user.name"></a>
+                </li>
+                <li><a @click="loginOut" class="notice">退出登录</a></li>
+              </div>
+              <div class="sui-nav pull-right info" v-if="user.name===undefined">
+                <router-link to="/login">登陆</router-link>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </header>
@@ -118,14 +114,25 @@
   import '~/assets/plugins/font-awesome/css/font-awesome.min.css'
   import '~/assets/css/widget-base.css'
   import '~/assets/css/widget-head-foot.css'
+  import {getUser, rmUser} from '@/utils/auth'
+  import userApi from '@/api/user'
+
   export default {
-    data(){
-      return{
-        user:{}
+    data() {
+      return {
+        user: {}
       }
     },
-    created(){
-      this.user=getUser()
+    created() {
+      this.user = getUser()
+    },
+    methods: {
+      loginOut() {
+        userApi.loginOut().then(res => {
+          rmUser()//清楚用户信息
+          location.href = '/'
+        })
+      }
     }
   }
 </script>

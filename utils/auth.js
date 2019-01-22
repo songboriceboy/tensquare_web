@@ -17,3 +17,9 @@ export function getUser() {
     avater: Cookies.get(AvatarKey)
   }
 }
+
+export function rmUser() {
+    Cookies.remove(TokenKey),
+    Cookies.remove(NameKey),
+    Cookies.remove(AvatarKey)
+}
