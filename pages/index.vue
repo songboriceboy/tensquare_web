@@ -421,6 +421,7 @@
 <script>
 import '~/assets/css/page-sj-headline-login.css'
 
+
 export default {
 }
 </script>

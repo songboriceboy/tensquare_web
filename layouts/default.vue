@@ -119,6 +119,13 @@
   import '~/assets/css/widget-base.css'
   import '~/assets/css/widget-head-foot.css'
   export default {
-
+    data(){
+      return{
+        user:{}
+      }
+    },
+    created(){
+      this.user=getUser()
+    }
   }
 </script>
