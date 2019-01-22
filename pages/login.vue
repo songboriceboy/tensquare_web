@@ -62,6 +62,7 @@
                 <input type="text" id="inputpassword" v-model="password" placeholder="输入登录密码" class="input-xlarge"/>
               </div>
             </div>
+            <div id="weixin"></div>
             <div class="controls">
               <label> <input type="checkbox" name="remember-me"/><span class="type-text"
                                                                        style="font-size:12px;">记住登录状态</span> </label>
@@ -131,6 +132,19 @@
           }
         })
       }
+    },
+    mounted() {
+      var obj = new WxLogin({
+        id: "weixin",
+        appid: "wx3bdb1192c22883f3",
+        scope: "snsapi_login",
+        redirect_uri: "http://note.java.itcast.cn/weixinlogin"
+      })
+    },
+    head: {
+      script: [
+        {src: 'http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js'}
+      ]
     }
   }
 </script>
