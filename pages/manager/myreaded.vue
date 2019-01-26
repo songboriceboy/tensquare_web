@@ -31,6 +31,8 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-myreaded.css'
+
   export default {
     name: "myreaded"
   }

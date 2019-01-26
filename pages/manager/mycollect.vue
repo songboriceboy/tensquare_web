@@ -107,6 +107,7 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-mycollect.css'
   export default {
     name: "mycollect"
   }

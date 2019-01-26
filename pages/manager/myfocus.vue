@@ -142,6 +142,7 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-myfocus.css'
   export default {
     name: "myfocus"
   }

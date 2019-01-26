@@ -63,6 +63,7 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-account.css'
   export default {
     name: "account"
   }

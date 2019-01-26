@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-myanswer.css'
   export default {}
 </script>
 

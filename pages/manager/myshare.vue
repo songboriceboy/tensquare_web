@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-myshare.css'
   export default {}
 </script>
 

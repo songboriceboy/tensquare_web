@@ -80,6 +80,8 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-dynamic.css'
+
   export default {
     name: "dynamic"
   }

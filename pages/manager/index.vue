@@ -98,6 +98,7 @@
 </template>
 
 <script>
+  import '~/assets/css/page-sj-person-homepage.css'
     export default {
         name: "index"
     }
