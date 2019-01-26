@@ -20,8 +20,8 @@
                 <span class="btn-search fa fa-search"></span>
               </form>
               <div class="sui-nav pull-right info" v-if="user.name!==undefined">
-                <li><a href="~/assets/other-notice.html" target="_blank" class="notice">{{user.name}}</a></li>
-                <li><a href="#" class="homego"><img :src="user.avatar" width="50px" height="50px" :alt="user.name"></a>
+                <li><a href="/manager" target="_blank" class="notice">{{user.name}}</a></li>
+                <li><a href="/manager" class="homego"><img :src="user.avater" width="50px" height="50px" :alt="user.name"></a>
                 </li>
                 <li><a @click="loginOut" class="notice">退出登录</a></li>
               </div>
@@ -116,6 +116,7 @@
   import '~/assets/css/widget-head-foot.css'
   import {getUser, rmUser} from '@/utils/auth'
   import userApi from '@/api/user'
+  import {logout} from '@/api/login'
 
   export default {
     data() {
@@ -128,7 +129,7 @@
     },
     methods: {
       loginOut() {
-        userApi.loginOut().then(res => {
+        logout().then(res => {
           rmUser()//清楚用户信息
           location.href = '/'
         })

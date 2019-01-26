@@ -62,12 +62,13 @@
                 <input type="text" id="inputpassword" v-model="password" placeholder="输入登录密码" class="input-xlarge"/>
               </div>
             </div>
-            <div id="weixin"></div>
+
             <div class="controls">
               <label> <input type="checkbox" name="remember-me"/><span class="type-text"
                                                                        style="font-size:12px;">记住登录状态</span> </label>
               <button type="button" class="sui-btn btn-danger btn-yes" @click="login">登 录</button>
             </div>
+            <div id="weixin"></div>
             <div class="other-methods">
             </div>
           </form>
@@ -106,8 +107,8 @@
             this.$message({
               message: '注册成功',
               type: 'success'
-            }),
-              this.pojo = {}
+            })
+            this.pojo = {}
           } else {
             this.$message({
               message: '注册失败',
