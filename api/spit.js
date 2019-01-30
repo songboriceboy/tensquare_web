@@ -27,5 +27,12 @@ export default {
       url: `/${group_name}/${api_name}/thumbup/${id}`,
       method: 'put'
     })
+  },
+  save(pojo) {
+    return request({
+      url: `/${group_name}/${api_name}`,
+      method: 'post',
+      data: pojo
+    })
   }
 }

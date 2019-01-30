@@ -17,7 +17,7 @@
               <li><a href="#" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
                                                                                aria-hidden="true"></i>{{pojo.share}}</a>
               </li>
-              <li><a data-toggle="modal" data-target="#remarkModal"><i class="fa fa-commenting"
+              <li><a @click="dialogVisible=true;content=''" data-toggle="modal" data-target="#remarkModal"><i class="fa fa-commenting"
                                                                        aria-hidden="true"></i> {{pojo.comment}}</a></li>
             </ul>
           </div>
@@ -53,6 +53,20 @@
       </div>
     </div>
     <div class="clearfix"></div>
+    <el-dialog
+      title="评论"
+      :visible.sync="dialogVisible"
+      width="40%">
+      <div class="quill-editor"
+           :content="content"
+           @change="onEditorChange($event)"
+           v-quill:myQuillEditor="editorOption">
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -60,6 +74,7 @@
   import '~/assets/css/page-sj-spit-detail.css'
   import spitApi from '@/api/spit'
   import axios from 'axios'
+  import spit from "../../../api/spit";
 
   export default {
     asyncData({params}) {
@@ -71,6 +86,49 @@
           }
         })
       )
+    },
+    data() {
+      return {
+        content:'',
+        dialogVisible: false,
+        editorOption: {
+          modules: {
+            toolbar: [
+              [{'size': ['small', false, 'large']}],
+              ['bold', 'italic'],
+              [{'list': 'ordered'}, {'list': 'bullet'}],
+              ['link', 'image']
+            ]
+          }
+        }
+      }
+    },
+    methods: {
+      onEditorChange({editor, html, text}) {
+        console.log('editor change!', editor, html, text)
+        this.content = html
+      },
+      save(){
+        spitApi.save({content:this.content}).then(res=>{
+          this.$message({
+            message: res.data.message,
+            type: (res.data.flag?'success':'error')
+          })
+          if (res.data.flag){
+            this.dialogVisible=false
+            spitApi.commentlist(this.pojo.id).then(res=>{
+              this.commentlist=res.data.data
+            })
+          }
+        })
+      }
     }
   }
 </script>
+<style>
+  .quill-editor {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+</style>

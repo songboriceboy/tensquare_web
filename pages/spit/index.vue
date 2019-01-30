@@ -87,7 +87,7 @@
       <div class="fl right-tag">
         <div class="block-btn">
           <p>来个匿名吐槽，发泄一下你心中的怒火吧！</p>
-          <a class="sui-btn btn-block btn-share" href="~/assets/spit-submit.html" target="_blank">发吐槽</a>
+          <nuxt-link to="/spit/submit" class="sui-btn btn-block btn-share">发表吐槽</nuxt-link>
         </div>
       </div>
       <div class="clearfix"></div>
