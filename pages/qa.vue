@@ -17,7 +17,7 @@
 
 <script>
 
-  import labelApi from "@/api/label";
+  import labelApi from "@/api/label"
 
   export default {
     asyncData({params, error}) {

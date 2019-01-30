@@ -5,62 +5,32 @@
         <div id="index" class="tab-pane active">
           <div class="tab-bottom-line">
             <ul class="sui-nav nav-tabs">
-              <li class="active"><a href="#new" data-toggle="tab">最新回答</a></li>
-              <li><a href="#hot" data-toggle="tab">热门回答</a></li>
-              <li><a href="#wait" data-toggle="tab">等待回答</a></li>
+              <li :class="type=='new'?'active':''"><a @click="type='new'">最新回答</a></li>
+              <li :class="type=='hot'?'active':''"><a @click="type='hot'">热门回答</a></li>
+              <li :class="type=='wait'?'active':''"><a @click="type='wait'">等待回答</a></li>
             </ul>
             <div class="qa-list">
               <div class="tab-content">
-                <div id="new" class="tab-pane active">
+                <div id="new" :class="'tab-pane '+(type=='new'?'active':'')" v-infinite-scroll="loadMore">
                   <ul class="detail-list">
-                    <li class="qa-item">
+                    <li class="qa-item" v-for="(item,index) in newlist" :key="index">
                       <div class="fl record">
                         <div class="number">
                           <div class="border useful">
-                            <p class="usenum">12</p>
+                            <p class="usenum">{{item.thumbup}}</p>
                             <p>有用</p>
                           </div>
                           <div class="border answer">
-                            <p class="ansnum">9</p>
+                            <p class="ansnum">{{item.reply}}</p>
                             <p>回答</p>
                           </div>
                         </div>
                       </div>
                       <div class="fl info">
                         <div class="question">
-                          <p class="author"><span class="name">luckness</span><span>3</span>分钟前回答</p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">有关PHP初级进阶的问题？</a></p>
-                        </div>
-                        <div class="other">
-                          <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
-                          </ul>
-                          <div class="fr brower">
-                            <p>浏览量 50 | 2017-07-05 15:09 来自 <a href="#">毕鹏 </a></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </li>
-                    <li class="qa-item">
-                      <div class="fl record">
-                        <div class="number">
-                          <div class="border useful">
-                            <p class="usenum">12</p>
-                            <p>有用</p>
-                          </div>
-                          <div class="border answer">
-                            <p class="ansnum">9</p>
-                            <p>回答</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="fl info">
-                        <div class="question">
-                          <p class="author"><span class="name">牛奶糖</span><span>3</span>分钟前回答</p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">springMVC的controller接收json数据失败</a>
+                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{item.replytime}}</span>回答
                           </p>
+                          <p class="title"><a href="./qa-detail.html" target="_blank">{{item.title}}</a></p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
@@ -68,129 +38,7 @@
                             <li>Javascript</li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 50 | 2017-07-05 15:09 来自 <a href="#">毕鹏 </a></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </li>
-                    <li class="qa-item">
-                      <div class="fl record">
-                        <div class="number">
-                          <div class="border useful">
-                            <p class="usenum">12</p>
-                            <p>有用</p>
-                          </div>
-                          <div class="border answer">
-                            <p class="ansnum">9</p>
-                            <p>回答</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="fl info">
-                        <div class="question">
-                          <p class="author"><span class="name">大白兔</span><span>3</span>分钟前回答</p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">监听器中timer查询数据库</a></p>
-                        </div>
-                        <div class="other">
-                          <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
-                          </ul>
-                          <div class="fr brower">
-                            <p>浏览量 50 | 2017-07-05 15:09 来自 <a href="#">毕鹏 </a></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </li>
-                    <li class="qa-item">
-                      <div class="fl record">
-                        <div class="number">
-                          <div class="border useful">
-                            <p class="usenum">34</p>
-                            <p>有用</p>
-                          </div>
-                          <div class="border answer">
-                            <p class="ansnum">9</p>
-                            <p>回答</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="fl info">
-                        <div class="question">
-                          <p class="author"><span class="name">luckness</span><span>3</span>分钟前回答</p>
-                          <p class="title"><a href="./qa-detail.html"
-                                              target="_blank">服务器上安装了一个考试系统ASP.NET,安装完成后访问不了，求助</a></p>
-                        </div>
-                        <div class="other">
-                          <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
-                          </ul>
-                          <div class="fr brower">
-                            <p>浏览量 50 | 2017-07-05 15:09 来自 <a href="#">毕鹏 </a></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </li>
-                    <li class="qa-item">
-                      <div class="fl record">
-                        <div class="number">
-                          <div class="border useful">
-                            <p class="usenum">12</p>
-                            <p>有用</p>
-                          </div>
-                          <div class="border answer">
-                            <p class="ansnum">9</p>
-                            <p>回答</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="fl info">
-                        <div class="question">
-                          <p class="author"><span class="name">牛奶糖</span><span>3</span>分钟前回答</p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">springMVC的controller接收json数据失败</a>
-                          </p>
-                        </div>
-                        <div class="other">
-                          <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
-                          </ul>
-                          <div class="fr brower">
-                            <p>浏览量 50 | 2017-07-05 15:09 来自 <a href="#">毕鹏 </a></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </li>
-                    <li class="qa-item">
-                      <div class="fl record">
-                        <div class="number">
-                          <div class="border useful">
-                            <p class="usenum">12</p>
-                            <p>有用</p>
-                          </div>
-                          <div class="border answer">
-                            <p class="ansnum">9</p>
-                            <p>回答</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="fl info">
-                        <div class="question">
-                          <p class="author"><span class="name">大白兔</span><span>3</span>分钟前回答</p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">监听器中timer查询数据库</a></p>
-                        </div>
-                        <div class="other">
-                          <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
-                          </ul>
-                          <div class="fr brower">
-                            <p>浏览量 50 | 2017-07-05 15:09 来自 <a href="#">毕鹏 </a></p>
+                            <p>浏览量 {{item.visits}} | {{item.createtime}} 来自 <a href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -198,11 +46,75 @@
                     </li>
                   </ul>
                 </div>
-                <div id="hot" class="tab-pane">
-                  <p>热门回答</p>
+                <div id="hot" :class="'tab-pane '+(type=='hot'?'active':'')">
+                  <ul class="detail-list">
+                    <li class="qa-item" v-for="(item,index) in hotlist" :key="index">
+                      <div class="fl record">
+                        <div class="number">
+                          <div class="border useful">
+                            <p class="usenum">{{item.thumbup}}</p>
+                            <p>有用</p>
+                          </div>
+                          <div class="border answer">
+                            <p class="ansnum">{{item.reply}}</p>
+                            <p>回答</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fl info">
+                        <div class="question">
+                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{item.replytime}}</span>回答
+                          </p>
+                          <p class="title"><a href="./qa-detail.html" target="_blank">{{item.title}}</a></p>
+                        </div>
+                        <div class="other">
+                          <ul class="fl sui-tag">
+                            <li>Php</li>
+                            <li>Javascript</li>
+                          </ul>
+                          <div class="fr brower">
+                            <p>浏览量 {{item.visits}} | {{item.createtime}} 来自 <a href="#">{{item.nickname}} </a></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </li>
+                  </ul>
                 </div>
-                <div id="wait" class="tab-pane">
-                  <p>等待回答</p>
+                <div id="wait" :class="'tab-pane '+(type=='wait'?'active':'')">
+                  <ul class="detail-list">
+                    <li class="qa-item" v-for="(item,index) in waitlist" :key="index">
+                      <div class="fl record">
+                        <div class="number">
+                          <div class="border useful">
+                            <p class="usenum">{{item.thumbup}}</p>
+                            <p>有用</p>
+                          </div>
+                          <div class="border answer">
+                            <p class="ansnum">{{item.reply}}</p>
+                            <p>回答</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fl info">
+                        <div class="question">
+                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{item.replytime}}</span>回答
+                          </p>
+                          <p class="title"><a href="./qa-detail.html" target="_blank">{{item.title}}</a></p>
+                        </div>
+                        <div class="other">
+                          <ul class="fl sui-tag">
+                            <li>Php</li>
+                            <li>Javascript</li>
+                          </ul>
+                          <div class="fr brower">
+                            <p>浏览量 {{item.visits}} | {{item.createtime}} 来自 <a href="#">{{item.nickname}} </a></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -249,6 +161,55 @@
 </template>
 
 <script>
-  import '~/assets/css/page-sj-qa-login.css'
-  export default {}
+  import '~/assets/css/page-sj-qa-logined.css'
+  import problemApi from "@/api/problem"
+  import axios from 'axios'
+
+  export default {
+    data() {
+      return {
+        type: 'new',
+        page_new: 1,//记录最新问题列表的页码
+        page_hot: 1,//记录热门问题列表的页码
+        page_wait: 1//记录等待回答列表的页码
+      }
+    },
+    asyncData({params}) {
+      return axios.all([problemApi.list('newlist', params.label, 1, 10),
+        problemApi.list('hotlist', params.label, 1, 10),
+        problemApi.list('waitlist', params.label, 1, 10)]).then(axios.spread(function (newlist, hotlist, waitlist) {
+        return {
+          newlist: newlist.data.data.rows,
+          hotlist: hotlist.data.data.rows,
+          waitlist: waitlist.data.data.rows,
+          label: params.label
+        }
+      }))
+    },
+    methods: {
+      loadMore() {
+        if (this.type === 'new') {
+          this.page_new++
+          console.log(this.label)
+          problemApi.list('newlist',this.label,this.page_new,10).then(res=>{
+            this.newlist=this.newlist.concat(res.data.data.rows)
+          })
+        }
+        if (this.type === 'hot') {
+          this.page_hot++
+          console.log(this.label)
+          problemApi.list('hotlist',this.label,this.page_hot,10).then(res=>{
+            this.hotlist=this.hotlist.concat(res.data.data.rows)
+          })
+        }
+        if (this.type === 'wait') {
+          this.page_wait++
+          console.log(this.label)
+          problemApi.list('waitlist',this.label,this.page_wait,10).then(res=>{
+            this.waitlist=this.waitlist.concat(res.data.data.rows)
+          })
+        }
+      }
+    }
+  }
 </script>
