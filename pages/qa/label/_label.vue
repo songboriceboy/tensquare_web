@@ -166,15 +166,7 @@
   import axios from 'axios'
 
   export default {
-    data() {
-      return {
-        type: 'new',
-        page_new: 1,//记录最新问题列表的页码
-        page_hot: 1,//记录热门问题列表的页码
-        page_wait: 1//记录等待回答列表的页码
-      }
-    },
-    asyncData({params}) {
+    asyncData({params,error}) {
       return axios.all([problemApi.list('newlist', params.label, 1, 10),
         problemApi.list('hotlist', params.label, 1, 10),
         problemApi.list('waitlist', params.label, 1, 10)]).then(axios.spread(function (newlist, hotlist, waitlist) {
@@ -185,6 +177,14 @@
           label: params.label
         }
       }))
+    },
+    data() {
+      return {
+        type: 'new',
+        page_new: 1,//记录最新问题列表的页码
+        page_hot: 1,//记录热门问题列表的页码
+        page_wait: 1//记录等待回答列表的页码
+      }
     },
     methods: {
       loadMore() {

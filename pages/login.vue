@@ -8,14 +8,14 @@
             <div class="control-group">
               <label for="inputname" class="control-label">名字</label>
               <div class="controls">
-                <input type="text" id="inputname" v-model="pojo.nickname" placeholder="真实姓名或常用昵称" class="input-xlarge"/>
+                <input type="text" id="inputname" required v-model="pojo.nickname" placeholder="真实姓名或常用昵称" class="input-xlarge"/>
               </div>
             </div>
             <div class="different">
               <div class="radio-content">
                 <div id="a1" class="phone">
                   <div class="control-group number">
-                    <input type="text" v-model="pojo.mobile" placeholder="仅支持大陆手机号" class="input-xlarge"/>
+                    <input type="text" v-model="pojo.mobile" required placeholder="仅支持大陆手机号" class="input-xlarge"/>
                   </div>
                   <div class="control-group code">
                     <div class="input-append">
@@ -105,15 +105,15 @@
         userApi.register(this.pojo, this.code).then(res => {
           if (res.data.flag) {
             this.$message({
-              message: '注册成功',
+              message: res.data.message,
               type: 'success'
             })
-            this.pojo = {}
           } else {
             this.$message({
-              message: '注册失败',
+              message: res.data.message,
               type: 'error'
             })
+            pojo=''
           }
         })
       },
