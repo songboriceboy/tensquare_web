@@ -8,5 +8,11 @@ export default {
       url: `/${api_group}/${api_name}/toplist`,
       method: 'get'
     })
+  },
+  getLabNameListBy(labeId){
+    return request({
+      url:`/${api_group}/${api_name}/getLabNameList`,
+      method:'get'
+    })
   }
 }

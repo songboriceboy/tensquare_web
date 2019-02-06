@@ -28,17 +28,16 @@
                       </div>
                       <div class="fl info">
                         <div class="question">
-                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{item.replytime}}</span>回答
+                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{getDate(item.replytime)}}</span>回答
                           </p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">{{item.title}}</a></p>
+                          <p class="title"><nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link></p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
+                            <li>{{label}}</li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 {{item.visits}} | {{item.createtime}} 来自 <a href="#">{{item.nickname}} </a></p>
+                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -63,17 +62,16 @@
                       </div>
                       <div class="fl info">
                         <div class="question">
-                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{item.replytime}}</span>回答
+                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{getDate(item.replytime)}}</span>回答
                           </p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">{{item.title}}</a></p>
+                          <p class="title"><nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link></p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
+                            <li>{{label}}</li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 {{item.visits}} | {{item.createtime}} 来自 <a href="#">{{item.nickname}} </a></p>
+                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -98,17 +96,16 @@
                       </div>
                       <div class="fl info">
                         <div class="question">
-                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{item.replytime}}</span>回答
+                          <p class="author"><span class="name">{{item.replyname}}</span><span>{{getDate(item.replytime)}}</span>回答
                           </p>
-                          <p class="title"><a href="./qa-detail.html" target="_blank">{{item.title}}</a></p>
+                          <p class="title"><nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link></p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>Php</li>
-                            <li>Javascript</li>
+                            <li>{{label}}</li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 {{item.visits}} | {{item.createtime}} 来自 <a href="#">{{item.nickname}} </a></p>
+                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -137,7 +134,7 @@
     <div class="fl right-tag">
       <div class="block-btn">
         <p>今天，有什么好东西要和大家分享么?</p>
-        <a class="sui-btn btn-block btn-share" href="./qa-submit.html" target="_blank">发布问题</a>
+        <a class="sui-btn btn-block btn-share" target="_blank"><nuxt-link to="/qa/problem">发布问题</nuxt-link></a>
       </div>
       <div class="hot-tags">
         <div class="head">
@@ -164,6 +161,7 @@
   import '~/assets/css/page-sj-qa-logined.css'
   import problemApi from "@/api/problem"
   import axios from 'axios'
+  import {formatDate,getDateDiff} from '@/utils/formatdate'
 
   export default {
     asyncData({params,error}) {
@@ -209,6 +207,12 @@
             this.waitlist=this.waitlist.concat(res.data.data.rows)
           })
         }
+      },
+      dataFormate(date){
+        return formatDate(date)
+      },
+      getDate(date){
+        return getDateDiff(date)
       }
     }
   }

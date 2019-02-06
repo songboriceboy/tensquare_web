@@ -21,7 +21,7 @@
                 </div>
                 <div class="info">
                   <p class="text">
-                    <nuxt-link :to="'/spit/item/'+item.id"> {{item.content}}</nuxt-link>
+                    <nuxt-link :to="'/spit/problem/'+item.id"> {{item.content}}</nuxt-link>
                   </p>
                   <div class="other">
                     <div class="fl date">

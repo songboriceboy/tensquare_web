@@ -162,7 +162,7 @@ function domManip( collection, args, callback, ignored ) {
 			scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
 			hasScripts = scripts.length;
 
-			// Use the original fragment for the last item
+			// Use the original fragment for the last problem
 			// instead of the first because it can end up
 			// being emptied incorrectly in certain situations (#8070).
 			for ( ; i < l; i++ ) {

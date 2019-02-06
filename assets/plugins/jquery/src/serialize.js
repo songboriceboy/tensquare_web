@@ -19,11 +19,11 @@ function buildParams( prefix, obj, traditional, add ) {
 
 	if ( Array.isArray( obj ) ) {
 
-		// Serialize array item.
+		// Serialize array problem.
 		jQuery.each( obj, function( i, v ) {
 			if ( traditional || rbracket.test( prefix ) ) {
 
-				// Treat each array item as a scalar.
+				// Treat each array problem as a scalar.
 				add( prefix, v );
 
 			} else {
@@ -40,14 +40,14 @@ function buildParams( prefix, obj, traditional, add ) {
 
 	} else if ( !traditional && jQuery.type( obj ) === "object" ) {
 
-		// Serialize object item.
+		// Serialize object problem.
 		for ( name in obj ) {
 			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
 		}
 
 	} else {
 
-		// Serialize scalar item.
+		// Serialize scalar problem.
 		add( prefix, obj );
 	}
 }

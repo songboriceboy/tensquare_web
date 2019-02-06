@@ -12,7 +12,7 @@
           </div>
           <ul class="yui3-g job-list" style="display:block;">
             <li class="yui3-u-1-2 job-item" v-for="(item,index) in recommendList" :key="index">
-              <p><span class="name"><nuxt-link :to="'/recruit/item/'+item.id">{{item.jobname}}</nuxt-link></span><span
+              <p><span class="name"><nuxt-link :to="'/recruit/problem/'+item.id">{{item.jobname}}</nuxt-link></span><span
                 class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
               <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
               </p>
