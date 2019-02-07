@@ -7,7 +7,7 @@
         </div>
         <div class="middle-intro">
           <div class="name">
-            {{item.jobname}} &middot; 有赞
+            {{item.jobname}}
           </div>
           <div class="intro">
             {{item.salary}} / {{item.condition}} / {{item.education}} / {{item.type}}
@@ -44,26 +44,27 @@
           <p>{{item.content2}}</p>
         </div>
         <div class="time">
-          发布于1小时前
+          {{formatdate(item.createtime)}}
         </div>
       </div>
       <div class="fl right-tag">
         <div class="company-job">
           <div class="intro">
-            <img src="~/assets/img/widget-company.png" alt=""/>
+            <img :src="enterprise_item.logo" :alt="enterprise_item.name"/>
             <div class="title">
-              有赞App
+              {{enterprise_item.name}}
             </div>
             <div class="content">
-              {{enterprise_item.name}}
+              {{enterprise_item.summary}}
             </div>
           </div>
           <div class="tag">
             <li v-for="(item,index) in enterprise_item.labels.split(',')" :key="index"></li>
           </div>
           <div class="btns">
-            <a class="sui-btn btn-home" :href="enterprise_item.url" target="_blank">企业主页</a>
-            <a class="sui-btn btn-position" href="./recruit-job.html" target="_blank">{{enterprise_item.jobcount}}个职位</a>
+            <a class="sui-btn btn-home" :href="'/recruit/enterprise/'+enterprise_item.id" target="_blank">企业主页</a>
+            <a class="sui-btn btn-position" href="./recruit-job.html"
+               target="_blank">{{enterprise_item.jobcount}}个职位</a>
           </div>
         </div>
       </div>
@@ -75,6 +76,7 @@
   import '~/assets/css/page-sj-recruit-detail.css'
   import recruit from '@/api/recruit'
   import enterpriseApi from '@/api/enterprise'
+  import {getDateDiff} from '@/utils/formatdate'
 
   export default {
     asyncData({params}) {
@@ -86,6 +88,11 @@
           }
         })
       })
+    },
+    methods: {
+      formatdate(date) {
+        return getDateDiff(date)
+      }
     }
   }
 </script>

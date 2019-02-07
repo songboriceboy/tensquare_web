@@ -7,11 +7,11 @@
           <img :src="item.image" alt=""/>
         </div>
         <div class="right-txt">
-          <p>开始时间： {{item.starttime}}</p>
-          <p>结束时间： {{item.endtime}}</p>
+          <p>开始时间： {{formatDate1(item.starttime)}}</p>
+          <p>结束时间： {{formatDate1(item.endtime)}}</p>
           <p>举办地点： {{item.address}}</p>
           <p>主办方：{{item.sponsor}}</p>
-          <p>报名截止： {{item.enrolltime}}</p>
+          <p>报名截止： {{formatDate1(item.enrolltime)}}</p>
           <div class="join">
             <button class="sui-btn btn-danger">立即报名</button>
             <span class="will">报名即将开始</span>
@@ -36,8 +36,6 @@
             <div class="text">
               <h4></h4>
               <p>{{item.detail}}</p>
-              <p>随着各国放宽金融法规，在 FinTech 创新上，尤其区块链领域正受到前所未有的支持，目前区块链技术有哪些最佳实践？如何替企业降低成本？金融新技术还有哪些玩法？我们将邀请研究 FinTech
-                的技术专家，一起看金融技术在这阶段的深度实践。</p>
             </div>
           </div>
         </div>
@@ -74,7 +72,7 @@
 <script>
   import gatheringAPi from '@/api/gathering'
   import '~/assets/css/page-sj-activity-detail.css'
-
+  import {formatDate} from '@/utils/formatdate'
   export default {
     asyncData({params}) {
       return gatheringAPi.findById(params.id).then(res => {
@@ -88,6 +86,11 @@
       link:[
         {rel:'stylesheet',href:'https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css'}
       ]
+    },
+    methods:{
+      formatDate1(date){
+        return formatDate(date)
+      }
     }
   }
 </script>

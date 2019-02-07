@@ -4,27 +4,27 @@ const api_name = 'enterprise'
 export default {
   getList() {
     return request({
-      url: `/${api_name}`,
+      url: `/${group_name}/${api_name}`,
       method: 'get'
     })
   },
   search(page, size, searchMap) {
     return request({
-      url: `/${api_name}/search/${page}/${size}`,
+      url: `/${group_name}/${api_name}/search/${page}/${size}`,
       method: 'post',
       data: searchMap
     })
   },
   save(pojo) {
     return request({
-      url: `/${api_name}`,
+      url: `/${group_name}/${api_name}`,
       method: 'post',
       data: pojo
     })
   },
   findById(id) {
     return request({
-      url: `/${api_name}/${id}`,
+      url: `/${group_name}/${api_name}/${id}`,
       method: 'get'
     })
   },
@@ -33,14 +33,14 @@ export default {
       return this.save(pojo)
     }
     return request({
-      url: `/${api_name}/${id}`,
+      url: `/${group_name}/${api_name}/${id}`,
       method: 'put',
       data: pojo
     })
   },
   deleteById(id) {
     return request({
-      url: `/${api_name}/${id}`,
+      url: `/${group_name}/${api_name}/${id}`,
       method: 'delete'
     })
   },

@@ -30,14 +30,19 @@
                         <div class="question">
                           <p class="author"><span class="name">{{item.replyname}}</span><span>{{getDate(item.replytime)}}</span>回答
                           </p>
-                          <p class="title"><nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link></p>
+                          <p class="title">
+                            <nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link>
+                          </p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>{{label}}</li>
+                            <li>
+                              {{labelList}}
+                            </li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a href="#">{{item.nickname}} </a></p>
+                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a
+                              href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -64,14 +69,19 @@
                         <div class="question">
                           <p class="author"><span class="name">{{item.replyname}}</span><span>{{getDate(item.replytime)}}</span>回答
                           </p>
-                          <p class="title"><nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link></p>
+                          <p class="title">
+                            <nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link>
+                          </p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>{{label}}</li>
+                            <li>
+                              {{labelList}}
+                            </li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a href="#">{{item.nickname}} </a></p>
+                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a
+                              href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -98,14 +108,19 @@
                         <div class="question">
                           <p class="author"><span class="name">{{item.replyname}}</span><span>{{getDate(item.replytime)}}</span>回答
                           </p>
-                          <p class="title"><nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link></p>
+                          <p class="title">
+                            <nuxt-link :to="'/qa/problem/'+item.id">{{item.title}}</nuxt-link>
+                          </p>
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>{{label}}</li>
+                            <li>
+                              {{labelList}}
+                            </li>
                           </ul>
                           <div class="fr brower">
-                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a href="#">{{item.nickname}} </a></p>
+                            <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a
+                              href="#">{{item.nickname}} </a></p>
                           </div>
                         </div>
                       </div>
@@ -134,7 +149,9 @@
     <div class="fl right-tag">
       <div class="block-btn">
         <p>今天，有什么好东西要和大家分享么?</p>
-        <a class="sui-btn btn-block btn-share" target="_blank"><nuxt-link to="/qa/problem">发布问题</nuxt-link></a>
+        <a class="sui-btn btn-block btn-share" target="_blank">
+          <nuxt-link to="/qa/problem">发布问题</nuxt-link>
+        </a>
       </div>
       <div class="hot-tags">
         <div class="head">
@@ -160,11 +177,12 @@
 <script>
   import '~/assets/css/page-sj-qa-logined.css'
   import problemApi from "@/api/problem"
+  import labelApi from "@/api/label"
   import axios from 'axios'
-  import {formatDate,getDateDiff} from '@/utils/formatdate'
+  import {formatDate, getDateDiff} from '@/utils/formatdate'
 
   export default {
-    asyncData({params,error}) {
+    asyncData({params, error}) {
       return axios.all([problemApi.list('newlist', params.label, 1, 10),
         problemApi.list('hotlist', params.label, 1, 10),
         problemApi.list('waitlist', params.label, 1, 10)]).then(axios.spread(function (newlist, hotlist, waitlist) {
@@ -181,39 +199,47 @@
         type: 'new',
         page_new: 1,//记录最新问题列表的页码
         page_hot: 1,//记录热门问题列表的页码
-        page_wait: 1//记录等待回答列表的页码
+        page_wait: 1,//记录等待回答列表的页码
+        proid: '',
+        labelList: {}
       }
     },
     methods: {
       loadMore() {
         if (this.type === 'new') {
           this.page_new++
-          console.log(this.label)
-          problemApi.list('newlist',this.label,this.page_new,10).then(res=>{
-            this.newlist=this.newlist.concat(res.data.data.rows)
+          problemApi.list('newlist', this.label, this.page_new, 10).then(res => {
+            this.newlist = this.newlist.concat(res.data.data.rows)
           })
         }
         if (this.type === 'hot') {
           this.page_hot++
-          console.log(this.label)
-          problemApi.list('hotlist',this.label,this.page_hot,10).then(res=>{
-            this.hotlist=this.hotlist.concat(res.data.data.rows)
+          problemApi.list('hotlist', this.label, this.page_hot, 10).then(res => {
+            this.hotlist = this.hotlist.concat(res.data.data.rows)
           })
         }
         if (this.type === 'wait') {
           this.page_wait++
           console.log(this.label)
-          problemApi.list('waitlist',this.label,this.page_wait,10).then(res=>{
-            this.waitlist=this.waitlist.concat(res.data.data.rows)
+          problemApi.list('waitlist', this.label, this.page_wait, 10).then(res => {
+            this.waitlist = this.waitlist.concat(res.data.data.rows)
           })
         }
       },
-      dataFormate(date){
+      dataFormate(date) {
         return formatDate(date)
       },
-      getDate(date){
+      getDate(date) {
         return getDateDiff(date)
+      },
+      //获得根据问题id查询标签的集合 值拿到了 不知道怎么处理
+      getLabNameList(proId) {
+        problemApi.getLabelList(proId).then(res1 => {
+          labelApi.getLabNameListBy(res1.data.data).then(res2 => {
+            this.labelList = res2.data.data
+          })
+        })
       }
-    }
+    },
   }
 </script>

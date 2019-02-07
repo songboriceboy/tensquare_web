@@ -12,11 +12,11 @@
           </div>
           <ul class="yui3-g job-list" style="display:block;">
             <li class="yui3-u-1-2 job-item" v-for="(item,index) in recommendList" :key="index">
-              <p><span class="name"><nuxt-link :to="'/recruit/problem/'+item.id">{{item.jobname}}</nuxt-link></span><span
+              <p><span class="name"><nuxt-link :to="'/recruit/item/'+item.id">{{item.jobname}}</nuxt-link></span><span
                 class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
               <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
               </p>
-              <p><span class="company">百度 &middot; 6天前</span></p></li>
+              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}</span></p></li>
           </ul>
         </div>
         <div class="job-type latest-job">
@@ -27,12 +27,12 @@
             <div class="clearfix"></div>
           </div>
           <ul class="yui3-g job-list" style="display:block;">
-            <li class="yui3-u-1-2 job-item" v-for="(item,index) in newList" :key="index"><p><span class="name"> <a
-              href="./recruit-jobDetail.html" target="_blank">{{item.jobname}}</a></span><span
-              class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
+            <li class="yui3-u-1-2 job-item" v-for="(item,index) in newList" :key="index">
+              <p><span class="name"> <nuxt-link :to="'/recruit/item/'+item.id">{{item.jobname}}</nuxt-link></span><span
+                class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
               <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
               </p>
-              <p><span class="company">百度 &middot; 6天前</span></p></li>
+              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}</span></p></li>
           </ul>
         </div>
       </div>
@@ -48,7 +48,7 @@
             <li class="yui3-u-1-3 company-item" v-for="(item,index) in hostList" :key="index"><p><img
               :src="item.logo" alt=""/></p>
               <p class="title">{{item.name}}</p>
-              <p class="position"><a href="./recruit-company.html" target="_blank">{{item.jobcount}}</a></p></li>
+              <p class="position"><nuxt-link :to="'/recruit/enterprise/'+item.id">{{item.jobcount}}个职位</nuxt-link></p></li>
           </ul>
         </div>
       </div>
@@ -62,6 +62,7 @@
   import recruitApi from '@/api/recruit'
   import enterpriseApi from '@/api/enterprise'
   import axios from 'axios'
+  import {getDateDiff} from '@/utils/formatdate'
 
   export default {
     asyncData() {
@@ -75,6 +76,11 @@
 
         })
       )
+    },
+    methods: {
+      getDateDiffs(date) {
+        return getDateDiff(date)
+      }
     }
   }
 </script>

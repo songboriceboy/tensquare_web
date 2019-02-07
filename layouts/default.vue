@@ -17,8 +17,8 @@
                 <router-link to="/recruit" tag="li" active-class="active" exact><a>招聘</a></router-link>
               </ul>
               <form class="sui-form sui-form pull-left">
-                <input type="text" placeholder="输入关键词..."/>
-                <span class="btn-search fa fa-search"></span>
+                <input type="text" v-model="searchInfo" placeholder="输入关键词..."/>
+                <span class="btn-search fa fa-search" @click="search"></span>
               </form>
               <div class="sui-nav pull-right info" v-if="user.name!==undefined">
                 <li><a href="/manager" target="_blank" class="notice">{{user.name}}</a></li>
@@ -116,13 +116,13 @@
   import '~/assets/css/widget-base.css'
   import '~/assets/css/widget-head-foot.css'
   import {getUser, rmUser} from '@/utils/auth'
-  import userApi from '@/api/user'
   import {logout} from '@/api/login'
 
   export default {
     data() {
       return {
-        user: {}
+        user: {},
+        searchInfo:''
       }
     },
     created() {
@@ -134,6 +134,9 @@
           rmUser()//清楚用户信息
           location.href = '/'
         })
+      },
+      search(){
+        alert("这是搜索的信息："+this.searchInfo)
       }
     }
   }

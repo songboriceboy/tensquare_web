@@ -12,12 +12,12 @@
               <div class="activity-inner">
                 <a href="http://"></a>
                 <div class="img">
-                  <a :href="'/gathering/problem/'+item.id" target="_blank"><img :src="item.image" alt=""/></a>
+                  <a :href="'/gathering/item/'+item.id" target="_blank"><img :src="item.image" alt=""/></a>
                 </div>
                 <div class="text">
                   <p class="title">{{item.name}}</p>
                   <div class="fl goin">
-                    <p>时间：{{item.starttime}}</p>
+                    <p>时间：{{formatDate1(item.starttime)}}</p>
                     <p>城市：{{item.city}}</p>
                   </div>
                   <div class="fr btn">
@@ -37,6 +37,7 @@
 <script>
   import '~/assets/css/page-sj-activity-index.css'
   import gatheringApi from '@/api/gathering'
+  import {formatDate} from '@/utils/formatdate'
 
   export default {
     data() {
@@ -45,7 +46,7 @@
       }
     },
     asyncData() {
-      return gatheringApi.search(1, 13, {state: '1'}).then(res => {
+      return gatheringApi.search(1, 12, {state: '1'}).then(res => {
         return {items: res.data.data.rows}
       })
     },
@@ -55,7 +56,10 @@
         gatheringApi.search(this.pageNo,12,{state:'1'}).then(res=>{
           this.items=this.items.concat(res.data.data.rows)
         })
+      },
+      formatDate1(date){
+        return formatDate(date)
       }
-    }
+    },
   }
 </script>

@@ -11,7 +11,7 @@ export default {
   },
   search(page, size, searchMap) {
     return request({
-      url: `/${group_name}/search/${page}/${size}`,
+      url: `/${group_name}/${api_name}/search/${page}/${size}`,
       method: 'post',
       data: searchMap
     })

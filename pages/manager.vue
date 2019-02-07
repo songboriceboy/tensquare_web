@@ -1,20 +1,15 @@
 <template>
   <div>
-    <div class="myhome-personinfo" style="background-color:#AEDD81">
+    <div class="myhome-personinfo">
       <div class="wrapper">
         <div class="person-baseinfo">
           <!--头像信息-->
           <div class="photo">
-            <img src="~/assets/img/widget-myphoto.jpg" alt="" class="person"/>
-            <div class="share">
-              <span><img src="~/assets/img/asset-QQ.png" alt="" width="34" height="28"/></span>
-              <span><img src="~/assets/img/asset-weixin.png" alt="" width="28" height="28"/></span>
-              <span><img src="~/assets/img/asset-weibo.png" alt="" width="28" height="28"/></span>
-            </div>
+            <img :src="user.avater" alt="" class="person"/>
           </div>
           <!--文字信息-->
           <div class="info">
-            <h1>Web爱好者<span class="allinfo"><a href="./person-myfile.html" target="_blank">查看完整档案</a></span></h1>
+            <h1>{{user.name}}<span class="allinfo"><router-link to="/manager/myfile" active-class="active" exact><a>查看完整档案</a></router-link></span></h1>
             <ul class="fill">
               <li><i class="fa fa-map-marker" aria-hidden="true"></i> <span class="edit-item"> 填写现居城市</span>
                 <form action="" class="sui-form form-inline">
@@ -90,11 +85,18 @@
   import {getUser} from "@/utils/auth";
 
   export default {
-    created(){
-      if (getUser().name===undefined){
+    created() {
+      if (getUser().name === undefined) {
         this.$router.push('/login')
       }
-    }
+      this.user = getUser()
+    },
+    data() {
+      return {
+        user: {}
+      }
+    },
+    methods: {},
   }
 </script>
 

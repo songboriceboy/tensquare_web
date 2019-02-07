@@ -11,8 +11,9 @@ export default {
   },
   getLabNameListBy(labeId){
     return request({
-      url:`/${api_group}/${api_name}/getLabNameList`,
-      method:'get'
+      url:`/${api_group}/${api_name}/labnames`,
+      method:'post',
+      data:labeId
     })
   }
 }
