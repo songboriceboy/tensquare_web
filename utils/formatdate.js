@@ -18,8 +18,14 @@ export function getDateDiff(dateTimeStamp) {
   const hourC = diffValue / hour;
   const minC = diffValue / minute;
   let result=null
-  if (monthC >= 1) {
-    result = dateTimeStamp
+  if (monthC >= 12) {
+    result = "一年前";
+  }
+  else if (monthC >= 6) {
+    result = "半年前";
+  }
+  else if (monthC >= 1) {
+    result = "1个月前";
   }
   else if (weekC >= 1) {
     result = parseInt(weekC) + "周前";
@@ -33,7 +39,7 @@ export function getDateDiff(dateTimeStamp) {
   else if (minC >= 1) {
     result = parseInt(minC) + "分钟前";
   } else {
-    result = "刚刚发表";
+    result = "刚刚";
   }
   return result;
 }

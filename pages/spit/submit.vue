@@ -27,11 +27,11 @@
   import {quillRedefine} from 'vue-quill-editor-upload'
   import '~/assets/css/page-sj-spit-submit.css'
   import spitApi from '@/api/spit'
+  import {getUser} from '@/utils/auth'
 
   export default {
     data() {
       return {
-        content: '',
         editorOption: {
           // // some quill options
           // modules: {
@@ -43,6 +43,9 @@
           //   //   ['blockquote', 'code-block']
           //   // ]
           // }
+        },
+        pojo:{
+          content: '',
         }
       }
     },
@@ -53,25 +56,25 @@
       }, 3000)*/
     },
     created() {
-      this.editorOption = quillRedefine(
-        {
-          //图片上传
-          uploadConfig:{
-            action:'http://localhost:3000/upload',// 必填参数 图片上传地址
-            // 必选参数  res是一个函数，函数接收的response为上传成功时服务器返回的数据
-            // 你必须把返回的数据中所包含的图片地址 return 回去
-            res:(res)=>{
-              return res.info
-            },
-            name:'img'//图片上传参数名
-          }
-        }
-      )
+      // this.editorOption = quillRedefine(
+      //   {
+      //     //图片上传
+      //     uploadConfig:{
+      //       action:'http://localhost:3000/upload',// 必填参数 图片上传地址
+      //       // 必选参数  res是一个函数，函数接收的response为上传成功时服务器返回的数据
+      //       // 你必须把返回的数据中所包含的图片地址 return 回去
+      //       res:(res)=>{
+      //         return res.info
+      //       },
+      //       name:'img'//图片上传参数名
+      //     }
+      //   }
+      // )
     },
     methods: {
       onEditorChange({editor, html, text}) {//内容改变事件
         console.log('editor change!', editor, html, text)
-        this.content = html
+        this.pojo.content = html
       },
       onEditorBlur(editor) {//失去焦点事件
         console.log('editor blur!', editor)
@@ -83,7 +86,7 @@
         console.log('editor ready!', editor)
       },
       save() {//提交
-        spitApi.save({content: this.content}).then(res => {
+        spitApi.save(pojo).then(res => {
           this.$message({
             message: res.data.message,
             type: (res.data.flag ? 'success' : 'error')

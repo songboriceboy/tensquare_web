@@ -25,6 +25,12 @@ export default {
         password
       }
     })
+  },
+  findById(id){
+    return request({
+      url: `/${group_name}/${api_name}/${id}`,
+      method:'get'
+    })
   }
 
 }

@@ -8,7 +8,7 @@
           <span class="tag">PHPPP</span>
           &nbsp;
           <span class="author">{{problem_item.nickname}}</span>&nbsp;
-          <span>{{getDate(problem_item.createtime)}}提问 · {{getDate(problem_item.updatetime)}}</span>
+          <span>{{getDate(problem_item.updatetime)}}更新 · {{getDate(problem_item.createtime)}}发表</span>
         </p>
       </div>
       <div class="fr share">
@@ -60,7 +60,7 @@
               </div>
 
               <div class="myanswer pull-right">
-                <img src="~/assets/img/widget-photo.jpg" alt=""> <a href="#">{{item.nickname}}</a>
+                <img src="#"> <a href="#">{{item.nickname}}</a>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -102,6 +102,7 @@
   import {formatDate, getDateDiff} from '@/utils/formatdate'
   import replyApi from '@/api/reply'
   import axios from 'axios'
+  import userAPi from '@/api/user'
 
   export default {
     asyncData({params}) {
@@ -126,7 +127,12 @@
       },
       getDate(date) {
         return getDateDiff(date)
-      }
+      },
+      // replyPeople(userId){
+      //   return userAPi.findById(userId).then(res=>{
+      //     console.log(res.data.data.avatar)
+      //   })
+      // }
     }
   }
 </script>

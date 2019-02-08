@@ -36,8 +36,8 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>
-                              {{labelList}}
+                            <li v-for="(item1,index) in getLabNameList(item.id)" :key="index">
+                              {{item1[index]}}
                             </li>
                           </ul>
                           <div class="fr brower">
@@ -75,8 +75,8 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>
-                              {{labelList}}
+                            <li v-for="(item1,index) in getLabNameList(item.id)" :key="index">
+                              {{item1[index]}}
                             </li>
                           </ul>
                           <div class="fr brower">
@@ -114,8 +114,8 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li>
-                              {{labelList}}
+                            <li v-for="(item1,index) in getLabNameList(item.id)" :key="index">
+                              {{item1[index]}}
                             </li>
                           </ul>
                           <div class="fr brower">
@@ -150,7 +150,7 @@
       <div class="block-btn">
         <p>今天，有什么好东西要和大家分享么?</p>
         <a class="sui-btn btn-block btn-share" target="_blank">
-          <nuxt-link to="/qa/problem">发布问题</nuxt-link>
+          <nuxt-link to="/qa/submit">发布问题</nuxt-link>
         </a>
       </div>
       <div class="hot-tags">
@@ -236,7 +236,7 @@
       getLabNameList(proId) {
         problemApi.getLabelList(proId).then(res1 => {
           labelApi.getLabNameListBy(res1.data.data).then(res2 => {
-            this.labelList = res2.data.data
+            return res2.data.data
           })
         })
       }

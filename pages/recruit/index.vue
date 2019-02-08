@@ -16,7 +16,7 @@
                 class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
               <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
               </p>
-              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}</span></p></li>
+              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}发布</span></p></li>
           </ul>
         </div>
         <div class="job-type latest-job">
@@ -32,7 +32,7 @@
                 class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
               <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
               </p>
-              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}</span></p></li>
+              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}发布</span></p></li>
           </ul>
         </div>
       </div>
