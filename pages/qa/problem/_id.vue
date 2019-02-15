@@ -102,7 +102,6 @@
   import {formatDate, getDateDiff} from '@/utils/formatdate'
   import replyApi from '@/api/reply'
   import axios from 'axios'
-  import userAPi from '@/api/user'
 
   export default {
     asyncData({params}) {

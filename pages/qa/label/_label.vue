@@ -75,8 +75,8 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li v-for="(item1,index) in getLabNameList(item.id)" :key="index">
-                              {{item1[index]}}
+                            <li v-for="(item1,index1) in getLabNameList(item.id)" :key="index1">
+                              {{item1.labelname}}
                             </li>
                           </ul>
                           <div class="fr brower">
@@ -132,18 +132,6 @@
             </div>
           </div>
         </div>
-        <div id="php" class="tab-pane">
-          php
-        </div>
-        <div id="js" class="tab-pane">
-          Javascript
-        </div>
-        <div id="python" class="tab-pane">
-          python
-        </div>
-        <div id="java" class="tab-pane">
-          java
-        </div>
       </div>
     </div>
     <div class="fl right-tag">
@@ -159,13 +147,7 @@
         </div>
         <div class="tags">
           <ul class="sui-tag">
-            <li>Php</li>
-            <li>Javascript</li>
-            <li>Gif</li>
-            <li>Java</li>
-            <li>C#</li>
-            <li>iOS</li>
-            <li>C++</li>
+            <li v-for="(item,index) in labellist" :key="index">{{item.labelname}}</li>
           </ul>
         </div>
       </div>
@@ -182,15 +164,17 @@
   import {formatDate, getDateDiff} from '@/utils/formatdate'
 
   export default {
-    asyncData({params, error}) {
+    asyncData({params,error}) {
       return axios.all([problemApi.list('newlist', params.label, 1, 10),
         problemApi.list('hotlist', params.label, 1, 10),
-        problemApi.list('waitlist', params.label, 1, 10)]).then(axios.spread(function (newlist, hotlist, waitlist) {
+        problemApi.list('waitlist', params.label, 1, 10),
+        labelApi.getLabelList()]).then(axios.spread(function (newlist, hotlist, waitlist, labellist) {
         return {
           newlist: newlist.data.data.rows,
           hotlist: hotlist.data.data.rows,
           waitlist: waitlist.data.data.rows,
-          label: params.label
+          label: params.label,
+          labellist:labellist.data.data
         }
       }))
     },
@@ -236,6 +220,7 @@
       getLabNameList(proId) {
         problemApi.getLabelList(proId).then(res1 => {
           labelApi.getLabNameListBy(res1.data.data).then(res2 => {
+            console.log(res2.data.data)
             return res2.data.data
           })
         })

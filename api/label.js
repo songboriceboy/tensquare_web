@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import {getUser} from '@/utils/auth'
+
 const api_group = 'base'
 const api_name = 'label'
 export default {
@@ -9,11 +10,17 @@ export default {
       method: 'get'
     })
   },
-  getLabNameListBy(labeId){
+  getLabNameListBy(labeId) {
     return request({
-      url:`/${api_group}/${api_name}/labnames`,
-      method:'post',
-      data:labeId
+      url: `/${api_group}/${api_name}/labnames`,
+      method: 'post',
+      data: labeId
+    })
+  },
+  getLabelList() {
+    return request({
+      url: `/${api_group}/${api_name}`,
+      method: 'get'
     })
   }
 }

@@ -5,11 +5,12 @@
         <!-- 标题区 -->
         <div class="detail-tit">
           <div class="detail-author">
-            <a href="javascript:;">{{pojo.nikename}}</a> 发布
+            <a href="javascript:;">{{pojo.nickname}}</a> &nbsp;{{getDate(pojo.publishtime)}}发布
           </div>
-          <div class="detail-content">
-            <p>{{pojo.content}}</p>
-            <img src="~/assets/img/widget-tc-detail.png" alt=""/>
+          <div class="ql-container ql-snow">
+            <div class="ql-editor">
+              <div v-html="pojo.content"></div>
+            </div>
           </div>
           <div class="detail-tool">
             <ul>
@@ -17,8 +18,9 @@
               <li><a href="#" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
                                                                                aria-hidden="true"></i>{{pojo.share}}</a>
               </li>
-              <li><a @click="dialogVisible=true;content=''" data-toggle="modal" data-target="#remarkModal"><i class="fa fa-commenting"
-                                                                       aria-hidden="true"></i> {{pojo.comment}}</a></li>
+              <li><a @click="dialogVisible=true;content=''" data-toggle="modal" data-target="#remarkModal"><i
+                class="fa fa-commenting"
+                aria-hidden="true"></i> {{pojo.comment}}</a></li>
             </ul>
           </div>
         </div>
@@ -32,10 +34,15 @@
               <div class="item-photo">
                 <img src="~/assets/img/widget-widget-photo.png" alt=""/>
               </div>
-              <div class="item-content">
-                <p class="author"><a href="javascript:;">{{item.nikename}}</a> 发布{{item.publishtime}}</p>
-                <p class="content">{{item.content}}</p>
+              <div class="ql-container ql-snow">
+                <div class="ql-editor">
+                  {{item.content}}
+                </div>
               </div>
+              <!--<div class="item-content">-->
+              <!--<p class="author"><a href="javascript:;">{{item.nikename}}</a> 发布{{item.publishtime}}</p>-->
+              <!--<p class="content">{{item.content}}</p>-->
+              <!--</div>-->
               <div class="item-thumb">
                 <div>
                   <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{item.thumbup}}
@@ -49,7 +56,7 @@
     <div class="fl right-tag">
       <div class="block-btn">
         <p>来个匿名吐槽，发泄一下你心中的怒火吧！</p>
-        <a class="sui-btn btn-block btn-share" href="./spit-submit.html" target="_blank">发吐槽</a>
+        <nuxt-link to="/spit/submit" class="sui-btn btn-block btn-share">发表吐槽</nuxt-link>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -74,12 +81,13 @@
   import '~/assets/css/page-sj-spit-detail.css'
   import spitApi from '@/api/spit'
   import axios from 'axios'
-  import spit from "../../../api/spit";
+  import {formatDate, getDateDiff} from '@/utils/formatdate'
 
   export default {
     asyncData({params}) {
       return axios.all([spitApi.findById(params.id), spitApi.commentlist(params.id)]).then(
         axios.spread(function (pojo, commentlist) {
+          console.log(pojo.data.data)
           return {
             pojo: pojo.data.data,
             commentlist: commentlist.data.data
@@ -89,7 +97,7 @@
     },
     data() {
       return {
-        content:'',
+        content: '',
         dialogVisible: false,
         editorOption: {
           modules: {
@@ -108,19 +116,22 @@
         console.log('editor change!', editor, html, text)
         this.content = html
       },
-      save(){
-        spitApi.save({content:this.content}).then(res=>{
+      save() {
+        spitApi.save({content: this.content}).then(res => {
           this.$message({
             message: res.data.message,
-            type: (res.data.flag?'success':'error')
+            type: (res.data.flag ? 'success' : 'error')
           })
-          if (res.data.flag){
-            this.dialogVisible=false
-            spitApi.commentlist(this.pojo.id).then(res=>{
-              this.commentlist=res.data.data
+          if (res.data.flag) {
+            this.dialogVisible = false
+            spitApi.commentlist(this.pojo.id).then(res => {
+              this.commentlist = res.data.data
             })
           }
         })
+      },
+      getDate(date) {
+        return getDateDiff(date)
       }
     }
   }

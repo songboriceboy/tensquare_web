@@ -7,7 +7,7 @@
           <router-link tag="li" :to="'/qa/label/'+item.id" active-class="active" v-for="(item,index) in labelList"
                        :key="index"><a>{{item.labelname}}</a></router-link>
         </ul>
-        <span class="fr more"><a href="./qa-allTag.html" target="_blank">更多</a></span>
+        <span class="fr more"><nuxt-link to="/label">更多</nuxt-link></span>
         <div class="clearfix"></div>
       </div>
     </div>

@@ -36,14 +36,14 @@
   </div>
 </template>
 <!--<div class="editor">-->
-<!--<div class="quill-editor"-->
-<!--:content="content"-->
-<!--@change="onEditorChange($event)"-->
-<!--@blur="onEditorBlur($event)"-->
-<!--@focus="onEditorFocus($event)"-->
-<!--@ready="onEditorReady($event)"-->
-<!--v-quill:myQuillEditor="editorOption">-->
-<!--</div>-->
+  <!--<div class="quill-editor"-->
+       <!--:content="content"-->
+       <!--@change="onEditorChange($event)"-->
+       <!--@blur="onEditorBlur($event)"-->
+       <!--@focus="onEditorFocus($event)"-->
+       <!--@ready="onEditorReady($event)"-->
+       <!--v-quill:myQuillEditor="editorOption">-->
+  <!--</div>-->
 <!--</div>-->
 <script>
   import '~/assets/css/page-sj-qa-submit.css'

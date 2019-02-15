@@ -5,7 +5,7 @@
       <h3>发布吐槽</h3>
       <div class="editor">
         <div class="quill-editor"
-             :content="content"
+             :content="pojo.content"
              @change="onEditorChange($event)"
              @blur="onEditorBlur($event)"
              @focus="onEditorFocus($event)"
@@ -32,6 +32,20 @@
   export default {
     data() {
       return {
+        pojo: {
+          _id: '',
+          content: '',
+          publishtime: '',
+          userid: '',
+          nickname: '',
+          visits: '',
+          thumbup: '',
+          share: '',
+          comment: '',
+          state: '',
+          parentid: '',
+          text: ''
+        },
         editorOption: {
           // // some quill options
           // modules: {
@@ -44,37 +58,13 @@
           //   // ]
           // }
         },
-        pojo:{
-          content: '',
-        }
       }
-    },
-    mounted() {
-      console.log('app init, my quill insrance object is:', this.myQuillEditor)
-      /*setTimeout(() => {
-        this.content = 'i am changed'
-      }, 3000)*/
-    },
-    created() {
-      // this.editorOption = quillRedefine(
-      //   {
-      //     //图片上传
-      //     uploadConfig:{
-      //       action:'http://localhost:3000/upload',// 必填参数 图片上传地址
-      //       // 必选参数  res是一个函数，函数接收的response为上传成功时服务器返回的数据
-      //       // 你必须把返回的数据中所包含的图片地址 return 回去
-      //       res:(res)=>{
-      //         return res.info
-      //       },
-      //       name:'img'//图片上传参数名
-      //     }
-      //   }
-      // )
     },
     methods: {
       onEditorChange({editor, html, text}) {//内容改变事件
         console.log('editor change!', editor, html, text)
         this.pojo.content = html
+        this.pojo.text = text
       },
       onEditorBlur(editor) {//失去焦点事件
         console.log('editor blur!', editor)
@@ -86,7 +76,8 @@
         console.log('editor ready!', editor)
       },
       save() {//提交
-        spitApi.save(pojo).then(res => {
+        this.pojo.nickname = getUser().name
+        spitApi.save(this.pojo).then(res => {
           this.$message({
             message: res.data.message,
             type: (res.data.flag ? 'success' : 'error')
