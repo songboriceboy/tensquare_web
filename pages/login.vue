@@ -135,12 +135,17 @@
       }
     },
     mounted() {
-      var obj = new WxLogin({
-        id: "weixin",
-        appid: "wx3bdb1192c22883f3",
-        scope: "snsapi_login",
-        redirect_uri: "http://note.java.itcast.cn/weixinlogin"
-      })
+      try {
+        var obj = new WxLogin({
+          id: "weixin",
+          appid: "wx3bdb1192c22883f3",
+          scope: "snsapi_login",
+          redirect_uri: "http://note.java.itcast.cn/weixinlogin"
+        })
+      }catch (e) {
+        location.href="/login"
+      }
+
     },
     head: {
       script: [

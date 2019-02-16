@@ -130,10 +130,8 @@
     },
     methods: {
       loginOut() {
-        logout().then(res => {
-          rmUser()//清楚用户信息
-          location.href = '/'
-        })
+        rmUser()//清楚用户信息
+        location.href = '/'
       },
       search(){
         alert("这是搜索的信息："+this.searchInfo)

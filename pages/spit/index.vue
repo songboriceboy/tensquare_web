@@ -9,8 +9,7 @@
                 <div class="fl record">
                   <div class="number">
                     <div class="border useful">
-                      <p class="usenum" @click="thumbup(index)"><a href="#" class="zan"><i :class="'fa fa-thumbs-up'+item.zan "
-                                                                                           aria-hidden="true"></i></a>
+                      <p class="usenum" @click="thumbup(index)"><a href="#" class="zan"><i :class="'fa fa-thumbs-up '+item.zan " aria-hidden="true"></i></a>
                       </p>
                       <p class="zannum"> {{item.thumbup}} </p>
                     </div>
@@ -28,36 +27,13 @@
                       <span>{{getDate(item.publishtime)}}</span>
                     </div>
                     <div class="fr remark">
-                      <a href="#" data-toggle="modal" data-target="#shareModal" class="share"><i class="fa fa-share-alt"
-                                                                                                 aria-hidden="true"></i>
-                        分享</a>
-                      <a href="#" data-toggle="modal" data-target="#remarkModal" class="comment"><i
-                        class="fa fa-commenting" aria-hidden="true"></i> 回复</a>
+                        <el-button @click="comment(item._id)" size="mini">评论</el-button>
                     </div>
                   </div>
                 </div>
                 <div class="clearfix"></div>
               </li>
             </ul>
-            <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                      aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">分享到</h4>
-                  </div>
-                  <div class="modal-body" style="overflow:hidden">
-                    <div class="jiathis_style_32x32">
-                      <a class="jiathis_button_qzone"></a>
-                      <a class="jiathis_button_tsina"></a>
-                      <a class="jiathis_button_weixin"></a>
-                      <a class="jiathis_button_cqq"></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="modal fade" id="remarkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -65,18 +41,6 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                       aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">发表评论</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div class="comment">
-                      <span class="who"><img src="~/assets/img/asset-photo.png"/>匿名评论</span>:
-                      今天入职腾讯，产品岗，普通非985211大学，上家是不到五十人创业小公司！16年毕业！找内推腾讯给的面试机会，五轮面试！可能是我把运气攒一起了！
-                    </div>
-                    <div class="form">
-                      <textarea class="form-control" rows="5" placeholder="匿名评论"></textarea>
-                      <div class="remark">
-                        <button class="sui-btn btn-info">发表</button>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -90,8 +54,29 @@
           <nuxt-link to="/spit/submit" class="sui-btn btn-block btn-share">发表吐槽</nuxt-link>
         </div>
       </div>
+      <div class="content-item">
+        <div class="tit">
+          <span>分享扩散</span>
+        </div>
+        <div class="social-share" data-sites="qq,qzone,weibo,wechat">
+        </div>
+      </div>
       <div class="clearfix"></div>
     </div>
+    <el-dialog
+      title="评论"
+      :visible.sync="dialogVisible"
+      width="40%">
+      <div class="quill-editor"
+           :content="reply.content"
+           @change="onEditorChange($event)"
+           v-quill:myQuillEditor="editorOption">
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="savecomment">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -115,7 +100,23 @@
     },
     data() {
       return {
-        pageNo: 1
+        pageNo: 1,
+        reply:{
+          _id:'',
+          spitid:'',
+          content:'',
+          createtime:'',
+          userid:'',
+          nickname:''
+        },
+        dialogVisible: false,
+        editorOption: {
+          modules: {
+            toolbar: [
+              ['bold', 'italic'],
+            ]
+          }
+        }
       }
     },
     methods: {
@@ -147,7 +148,11 @@
           return
         }
         this.items[index].zan='color'
-        spitApi.thumbup(this.items[index].id).then(res => {
+        spitApi.thumbup(this.items[index]._id).then(res => {
+          this.$message({
+            message: res.data.message,
+            type: (res.data.flag ? 'success' : 'error')
+          })
           if (res.data.flag) {
             this.items[index].thumbup++
           }
@@ -155,7 +160,36 @@
       },
       getDate(date){
         return formatDate(date)
-      }
-    }
+      },
+      comment(id){
+        this.dialogVisible=true
+        this.reply.spitid=id
+        this.reply.content=''
+        console.log(this.reply.spitid)
+      },
+      onEditorChange({editor, html, text}) {
+        this.reply.content = html
+      },
+      savecomment() {
+        this.reply.nickname=getUser().name
+        spitApi.savecomment(this.reply).then(res => {
+          this.$message({
+            message: res.data.message,
+            type: (res.data.flag ? 'success' : 'error')
+          })
+          if (res.data.flag) {
+            this.dialogVisible=false
+          }
+        })
+      },
+    },
+    head: {
+      script:[
+        {src:'https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js'}
+      ],
+      link:[
+        {rel:'stylesheet',href:'https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css'}
+      ]
+    },
   }
 </script>

@@ -14,14 +14,18 @@
           </div>
           <div class="detail-tool">
             <ul>
-              <li><span class="star"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{pojo.thumbup}}</span></li>
-              <li><a href="#" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
+              <li><a @click="thumbup()" class="zan"><i :class="'fa fa-thumbs-up '+zan" aria-hidden="true"></i>{{pojo.thumbup}}</a></li>
+              <li><a @click="share()" data-toggle="modal" data-target="#shareModal"><i class="fa fa-share-alt"
                                                                                aria-hidden="true"></i>{{pojo.share}}</a>
               </li>
-              <li><a @click="dialogVisible=true;content=''" data-toggle="modal" data-target="#remarkModal"><i
+              <li><a @click="dialogVisible=true;reply.content=''" data-toggle="modal" data-target="#remarkModal"><i
                 class="fa fa-commenting"
                 aria-hidden="true"></i> {{pojo.comment}}</a></li>
             </ul>
+          </div>
+          <div style="text-align:right" :class="'content-item '+show">
+            <div class="social-share" data-sites="qq,qzone,weibo,wechat">
+            </div>
           </div>
         </div>
         <!-- 评论区 -->
@@ -34,18 +38,13 @@
               <div class="item-photo">
                 <img src="~/assets/img/widget-widget-photo.png" alt=""/>
               </div>
-              <div class="ql-container ql-snow">
-                <div class="ql-editor">
-                  {{item.content}}
-                </div>
+              <div class="item-content">
+                <p class="author"><a href="javascript:;">{{item.nickname}}</a>&nbsp;{{getDate(item.createtime)}} 发布</p>
+                <p class="content" v-html="item.content"></p>
               </div>
-              <!--<div class="item-content">-->
-              <!--<p class="author"><a href="javascript:;">{{item.nikename}}</a> 发布{{item.publishtime}}</p>-->
-              <!--<p class="content">{{item.content}}</p>-->
-              <!--</div>-->
               <div class="item-thumb">
                 <div>
-                  <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{item.thumbup}}
+                  <a @click="commentzan(item._id,index)" class="zan"><i :class="'fa fa-thumbs-up '+mzan" aria-hidden="true"></i>{{item.thumbup}}</a>
                 </div>
               </div>
             </li>
@@ -65,13 +64,13 @@
       :visible.sync="dialogVisible"
       width="40%">
       <div class="quill-editor"
-           :content="content"
+           :content="reply.content"
            @change="onEditorChange($event)"
            v-quill:myQuillEditor="editorOption">
       </div>
       <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
+            <el-button type="primary" @click="savecomment">确 定</el-button>
         </span>
     </el-dialog>
   </div>
@@ -82,12 +81,35 @@
   import spitApi from '@/api/spit'
   import axios from 'axios'
   import {formatDate, getDateDiff} from '@/utils/formatdate'
+  import {getUser} from '@/utils/auth'
 
   export default {
+    data(){
+      return{
+        reply:{
+          _id:'',
+          spitid:'',
+          content:'',
+          createtime:'',
+          userid:'',
+          nickname:''
+        },
+        dialogVisible: false,
+        show:'hidden',
+        editorOption: {
+          modules: {
+            toolbar: [
+              ['bold', 'italic'],
+            ]
+          }
+        },
+        zan:'',
+        mzan:''
+      }
+    },
     asyncData({params}) {
       return axios.all([spitApi.findById(params.id), spitApi.commentlist(params.id)]).then(
         axios.spread(function (pojo, commentlist) {
-          console.log(pojo.data.data)
           return {
             pojo: pojo.data.data,
             commentlist: commentlist.data.data
@@ -95,36 +117,21 @@
         })
       )
     },
-    data() {
-      return {
-        content: '',
-        dialogVisible: false,
-        editorOption: {
-          modules: {
-            toolbar: [
-              [{'size': ['small', false, 'large']}],
-              ['bold', 'italic'],
-              [{'list': 'ordered'}, {'list': 'bullet'}],
-              ['link', 'image']
-            ]
-          }
-        }
-      }
-    },
     methods: {
       onEditorChange({editor, html, text}) {
-        console.log('editor change!', editor, html, text)
-        this.content = html
+        this.reply.content = html
       },
-      save() {
-        spitApi.save({content: this.content}).then(res => {
+      savecomment() {
+        this.reply.nickname=getUser().name
+        this.reply.spitid=this.pojo._id
+        spitApi.savecomment(this.reply).then(res => {
           this.$message({
             message: res.data.message,
             type: (res.data.flag ? 'success' : 'error')
           })
           if (res.data.flag) {
             this.dialogVisible = false
-            spitApi.commentlist(this.pojo.id).then(res => {
+            spitApi.commentlist(this.pojo._id).then(res => {
               this.commentlist = res.data.data
             })
           }
@@ -132,8 +139,61 @@
       },
       getDate(date) {
         return getDateDiff(date)
+      },
+      thumbup() {
+        if (getUser().name===undefined){
+          this.$message({
+            message:'必须登录后才能点赞哦~',
+            type:'warning'
+          })
+          return
+        }
+        this.zan='color'
+        spitApi.thumbup(this.pojo._id).then(res => {
+          this.$message({
+            message: res.data.message,
+            type: (res.data.flag ? 'success' : 'error')
+          })
+          if (res.data.flag) {
+            this.pojo.thumbup++
+          }
+        })
+      },
+      commentzan(id,index){
+        if (getUser().name===undefined){
+          this.$message({
+            message:'必须登录后才能点赞哦~',
+            type:'warning'
+          })
+          return
+        }
+        this.mzan='color'
+        spitApi.commentzan(id).then(res => {
+          this.$message({
+            message: res.data.message,
+            type: (res.data.flag ? 'success' : 'error')
+          })
+          if (res.data.flag) {
+            this.commentlist[index].thumbup++
+          }
+        })
+      },
+      share() {
+        if (this.show==='show'){
+          this.show='hidden'
+        } else if (this.show==='hidden') {
+          this.show='show'
+        }
       }
-    }
+    },
+    head: {
+      script:[
+        {src:'https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js'}
+      ],
+      link:[
+        {rel:'stylesheet',href:'https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css'}
+      ]
+    },
   }
 </script>
 <style>

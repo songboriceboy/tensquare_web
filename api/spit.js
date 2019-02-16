@@ -1,22 +1,23 @@
 import request from '@/utils/request'
+
 const group_name = 'spit'
 const api_name = 'spit'
 
 export default {
-  search(page,size,searchMap){
+  search(page, size, searchMap) {
     return request({
-      url:`/${group_name}/${api_name}/search/${page}/${size}`,
-      method:'post',
-      data:searchMap
+      url: `/${group_name}/${api_name}/search/${page}/${size}`,
+      method: 'post',
+      data: searchMap
     })
   },
-  findById(id){
+  findById(id) {
     return request({
       url: `/${group_name}/${api_name}/${id}`,
       method: 'get'
     })
   },
-  commentlist(id){
+  commentlist(id) {
     return request({
       url: `/${group_name}/${api_name}/commentlist/${id}`,
       method: 'get'
@@ -33,6 +34,19 @@ export default {
       url: `/${group_name}/${api_name}`,
       method: 'post',
       data: pojo
+    })
+  },
+  savecomment(pojo) {
+    return request({
+      url: `/${group_name}/${api_name}/comment`,
+      method: 'post',
+      data: pojo
+    })
+  },
+  commentzan(id) {
+    return request({
+      url: `/${group_name}/${api_name}/commentzan/${id}`,
+      method: 'put'
     })
   }
 }
