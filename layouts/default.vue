@@ -63,10 +63,13 @@
                   常用链接
                 </dt>
                 <dd>
-                  传智播客
+                  兆隆教育
                 </dd>
                 <dd>
-                  传智论坛
+                  兆隆论坛
+                </dd>
+                <dd>
+                  百度
                 </dd>
               </dl>
               <dl>
@@ -100,7 +103,7 @@
                 <p>本站由 王明欢 提供更新服务</p>
               </div>
             </div>
-            <p class="Copyright">Copyright &copy; 2017 传智问答社区 当前版本 0.0.1</p>
+            <p class="Copyright">Copyright &copy; 2018 兆隆问答社区 当前版本 0.0.1</p>
           </div>
         </div>
       </div>

@@ -9,8 +9,14 @@
           <div class="name">
             {{item.jobname}}
           </div>
-          <div class="intro">
-            {{item.salary}} / {{item.condition}} / {{item.education}} / {{item.type}}
+          <div class="intro" v-if="item.type==='1'">
+            {{item.salary}} / {{item.condition}} / {{item.education}} / 全职
+          </div>
+          <div class="intro" v-else-if="item.type==='2'">
+            {{item.salary}} / {{item.condition}} / {{item.education}} / 前台
+          </div>
+          <div class="intro" v-else-if="item.type==='3'">
+            {{item.salary}} / {{item.condition}} / {{item.education}} / 后台
           </div>
           <div class="tag">
             <li>Python</li>

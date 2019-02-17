@@ -36,7 +36,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="operate">
-              <span class="comment">评论</span>
+              <span class="comment"><a @click="show(problem_item.id)">评论</a></span>
               <span class="edit">编辑</span>
             </div>
           </div>
@@ -53,14 +53,14 @@
                     title="问题没有实际价值，缺少关键内容，没有改进余地"><i class="fa fa-caret-down" aria-hidden="true"></i></button>
           </div>
           <div class="title" v-for="(item,index) in replyList" :key="index">
-            <p>{{item.content}}</p>
+            <p v-html="item.content"></p>
             <div class="operate">
               <div class="tool pull-left">
                 <span class="time">{{getDate(item.createtime)}}提问</span>
               </div>
 
               <div class="myanswer pull-right">
-                <img src="#"> <a href="#">{{item.nickname}}</a>
+                <img src="~/assets/img/widget-widget-photo.png"> <a href="#">{{item.nickname}}</a>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -70,28 +70,42 @@
       </div>
     </div>
     <div class="fl right-tag">
-      <div class="similar-problem">
-        <h3 class="title">相似问题</h3>
-        <ul class="problem-list">
-          <li class="list-item">
-            <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
-            <p class="list-info"><a href="">1 回答</a> | 已解决</p>
-          </li>
-          <li class="list-item">
-            <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
-            <p class="list-info"><a href="">1 回答</a> | 已解决</p>
-          </li>
-          <li class="list-item">
-            <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
-            <p class="list-info"><a href="">1 回答</a> | 已解决</p>
-          </li>
-          <li class="list-item">
-            <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
-            <p class="list-info"><a href="">1 回答</a> | 已解决</p>
-          </li>
-        </ul>
-      </div>
+    <div class="similar-problem">
+    <h3 class="title">相似问题</h3>
+    <ul class="problem-list">
+    <li class="list-item">
+    <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
+    <p class="list-info"><a href="">1 回答</a> | 已解决</p>
+    </li>
+    <li class="list-item">
+    <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
+    <p class="list-info"><a href="">1 回答</a> | 已解决</p>
+    </li>
+    <li class="list-item">
+    <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
+    <p class="list-info"><a href="">1 回答</a> | 已解决</p>
+    </li>
+    <li class="list-item">
+    <p class="list-title">求一份浏览器中html css javascript jquery ajax的渲染顺序与原理！！</p>
+    <p class="list-info"><a href="">1 回答</a> | 已解决</p>
+    </li>
+    </ul>
     </div>
+    </div>
+    <el-dialog
+      title="评论"
+      :visible.sync="dialogVisible"
+      width="40%">
+      <div class="quill-editor"
+           :content="content"
+           @change="onEditorChange($event)"
+           v-quill:myQuillEditor="editorOption">
+      </div>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="savecomment">确 定</el-button>
+        </span>
+    </el-dialog>
     <div class="clearfix"></div>
   </div>
 </template>
@@ -102,6 +116,7 @@
   import {formatDate, getDateDiff} from '@/utils/formatdate'
   import replyApi from '@/api/reply'
   import axios from 'axios'
+  import {getUser} from '@/utils/auth'
 
   export default {
     asyncData({params}) {
@@ -111,6 +126,28 @@
           replyList: replyList.data.data
         }
       }))
+    },
+    data() {
+      return {
+        reply: {
+          id: '',
+          problemid: '',
+          content: '',
+          createtime: '',
+          updatetime: '',
+          userid: '',
+          nickname: '',
+        },
+        dialogVisible: false,
+        content: '',
+        editorOption: {
+          modules: {
+            toolbar: [
+              ['bold', 'italic'],
+            ]
+          }
+        },
+      }
     },
     head: {
       script: [
@@ -127,6 +164,29 @@
       getDate(date) {
         return getDateDiff(date)
       },
+      show(id) {
+        this.reply.problemid=id
+        this.dialogVisible = true
+      },
+      onEditorChange({editor, html, text}) {
+        this.reply.content = html
+      },
+      savecomment() {
+        this.reply.nickname=getUser().name
+        replyApi.save(this.reply).then(res=>{
+          this.$message({
+            message: res.data.message,
+            type: (res.data.flag ? 'success' : 'error')
+          })
+          if (res.data.flag) {
+            this.dialogVisible = false
+            replyApi.findByProblemId(this.problem_item.id).then(res => {
+              this.replyList = res.data.data
+              this.problem_item.reply++
+            })
+          }
+        })
+      }
       // replyPeople(userId){
       //   return userAPi.findById(userId).then(res=>{
       //     console.log(res.data.data.avatar)

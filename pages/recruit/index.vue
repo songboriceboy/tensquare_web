@@ -14,9 +14,10 @@
             <li class="yui3-u-1-2 job-item" v-for="(item,index) in recommendList" :key="index">
               <p><span class="name"><nuxt-link :to="'/recruit/item/'+item.id">{{item.jobname}}</nuxt-link></span><span
                 class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
-              <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
-              </p>
-              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}发布</span></p></li>
+              <p class="need">
+                <span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/<span v-if="item.type==='1'">全职</span><span v-else-if="item.type==='2'">前台</span><span v-else-if="item.type==='3'">后台</span>
+              <p>
+              <span class="company">{{getename1(item.eid,index)}}{{item.eid}} &middot; {{getDateDiffs(item.createtime)}}发布</span></p></li>
           </ul>
         </div>
         <div class="job-type latest-job">
@@ -30,9 +31,9 @@
             <li class="yui3-u-1-2 job-item" v-for="(item,index) in newList" :key="index">
               <p><span class="name"> <nuxt-link :to="'/recruit/item/'+item.id">{{item.jobname}}</nuxt-link></span><span
                 class="city"><i class="fa fa-map-marker"></i> {{item.address}}</span></p>
-              <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/{{item.type}}
+              <p class="need"><span class="money">{{item.salary}}</span>/{{item.condition}}/{{item.education}}/<span v-if="item.type==='1'">全职</span><span v-else-if="item.type==='2'">前台</span><span v-else-if="item.type==='3'">后台</span>
               </p>
-              <p><span class="company">百度 &middot; {{getDateDiffs(item.createtime)}}发布</span></p></li>
+              <p><span class="company">{{getename2(item.eid,index)}}{{item.eid}} &middot; {{getDateDiffs(item.createtime)}}发布</span></p></li>
           </ul>
         </div>
       </div>
@@ -77,11 +78,26 @@
         })
       )
     },
+    data(){
+      return{
+        ename:''
+      }
+    },
     methods: {
       getDateDiffs(date) {
         return getDateDiff(date)
-      }
-    }
+      },
+      getename2(eid,index){
+        enterpriseApi.findById(eid).then(res=>{
+          this.newList[index].eid=res.data.data.name
+        })
+      },
+      getename1(eid,index){
+        enterpriseApi.findById(eid).then(res=>{
+          this.recommendList[index].eid=res.data.data.name
+        })
+      },
+    },
   }
 </script>
 

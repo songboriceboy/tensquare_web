@@ -5,13 +5,14 @@
         <div id="index" class="tab-pane active">
           <div class="tab-bottom-line">
             <ul class="sui-nav nav-tabs">
-              <li :class="type=='new'?'active':''"><a @click="type='new'">最新回答</a></li>
-              <li :class="type=='hot'?'active':''"><a @click="type='hot'">热门回答</a></li>
-              <li :class="type=='wait'?'active':''"><a @click="type='wait'">等待回答</a></li>
+              <li :class="type='new'?'active':''"><a @click="type='new'">最新回答</a></li>
+              <li :class="type='hot'?'active':''"><a @click="type='hot'">热门回答</a></li>
+              <li :class="type='wait'?'active':''"><a @click="type='wait'">等待回答</a></li>
             </ul>
             <div class="qa-list">
               <div class="tab-content">
-                <div id="new" :class="'tab-pane '+(type=='new'?'active':'')" v-infinite-scroll="loadMore">
+                <!--<div id="new" :class="'tab-pane '+(type='new'?'active':'')" v-infinite-scroll="loadMore">-->
+                  <div id="new" :class="'tab-pane '+(type='new'?'active':'')">
                   <ul class="detail-list">
                     <li class="qa-item" v-for="(item,index) in newlist" :key="index">
                       <div class="fl record">
@@ -36,8 +37,8 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li v-for="(item1,index) in getLabNameList(item.id)" :key="index">
-                              {{item1[index]}}
+                            <li>
+                              {{item.labels}}
                             </li>
                           </ul>
                           <div class="fr brower">
@@ -50,7 +51,7 @@
                     </li>
                   </ul>
                 </div>
-                <div id="hot" :class="'tab-pane '+(type=='hot'?'active':'')">
+                <div id="hot" :class="'tab-pane '+(type='hot'?'active':'')">
                   <ul class="detail-list">
                     <li class="qa-item" v-for="(item,index) in hotlist" :key="index">
                       <div class="fl record">
@@ -75,9 +76,9 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li v-for="(item1,index1) in getLabNameList(item.id)" :key="index1">
-                              {{item1.labelname}}
-                            </li>
+                            <!--<li v-for="(item1,index1) in getLabNameList(item.id)" :key="index1">-->
+                              <!--{{item1.labelname}}-->
+                            <!--</li>-->
                           </ul>
                           <div class="fr brower">
                             <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a
@@ -89,7 +90,7 @@
                     </li>
                   </ul>
                 </div>
-                <div id="wait" :class="'tab-pane '+(type=='wait'?'active':'')">
+                <div id="wait" :class="'tab-pane '+(type='wait'?'active':'')">
                   <ul class="detail-list">
                     <li class="qa-item" v-for="(item,index) in waitlist" :key="index">
                       <div class="fl record">
@@ -114,9 +115,9 @@
                         </div>
                         <div class="other">
                           <ul class="fl sui-tag">
-                            <li v-for="(item1,index) in getLabNameList(item.id)" :key="index">
-                              {{item1[index]}}
-                            </li>
+                            <!--<li v-for="(item1,index) in getLabNameList(item.id)" :key="index">-->
+                              <!--{{item1[index]}}-->
+                            <!--</li>-->
                           </ul>
                           <div class="fr brower">
                             <p>浏览量 {{item.visits}} | {{dataFormate(item.createtime)}} 来自 <a
@@ -169,8 +170,14 @@
         problemApi.list('hotlist', params.label, 1, 10),
         problemApi.list('waitlist', params.label, 1, 10),
         labelApi.getLabelList()]).then(axios.spread(function (newlist, hotlist, waitlist, labellist) {
+          console.log(newlist)
         return {
-          newlist: newlist.data.data.rows,
+          newlist: newlist.data.data.rows.map(item=>{
+            return{
+              ...item,
+              labels:"显示不出来呀"
+            }
+          }),
           hotlist: hotlist.data.data.rows,
           waitlist: waitlist.data.data.rows,
           label: params.label,
@@ -184,32 +191,29 @@
         page_new: 1,//记录最新问题列表的页码
         page_hot: 1,//记录热门问题列表的页码
         page_wait: 1,//记录等待回答列表的页码
-        proid: '',
-        labelList: {}
       }
     },
     methods: {
-      loadMore() {
-        if (this.type === 'new') {
-          this.page_new++
-          problemApi.list('newlist', this.label, this.page_new, 10).then(res => {
-            this.newlist = this.newlist.concat(res.data.data.rows)
-          })
-        }
-        if (this.type === 'hot') {
-          this.page_hot++
-          problemApi.list('hotlist', this.label, this.page_hot, 10).then(res => {
-            this.hotlist = this.hotlist.concat(res.data.data.rows)
-          })
-        }
-        if (this.type === 'wait') {
-          this.page_wait++
-          console.log(this.label)
-          problemApi.list('waitlist', this.label, this.page_wait, 10).then(res => {
-            this.waitlist = this.waitlist.concat(res.data.data.rows)
-          })
-        }
-      },
+      // loadMore() {
+      //   if (this.type === 'new') {
+      //     this.page_new++
+      //     problemApi.list('newlist', this.label, this.page_new, 10).then(res => {
+      //       this.newlist = this.newlist.concat(res.data.data.rows)
+      //     })
+      //   }
+      //   if (this.type === 'hot') {
+      //     this.page_hot++
+      //     problemApi.list('hotlist', this.label, this.page_hot, 10).then(res => {
+      //       this.hotlist = this.hotlist.concat(res.data.data.rows)
+      //     })
+      //   }
+      //   if (this.type === 'wait') {
+      //     this.page_wait++
+      //     problemApi.list('waitlist', this.label, this.page_wait, 10).then(res => {
+      //       this.waitlist = this.waitlist.concat(res.data.data.rows)
+      //     })
+      //   }
+      // },
       dataFormate(date) {
         return formatDate(date)
       },
@@ -217,11 +221,10 @@
         return getDateDiff(date)
       },
       //获得根据问题id查询标签的集合 值拿到了 不知道怎么处理
-      getLabNameList(proId) {
+      getLabNameList(proId,index) {
         problemApi.getLabelList(proId).then(res1 => {
           labelApi.getLabNameListBy(res1.data.data).then(res2 => {
-            console.log(res2.data.data)
-            return res2.data.data
+            this.newlist[index].labels=res2.data.data
           })
         })
       }
